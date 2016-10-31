@@ -29,6 +29,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_marginTop="2dp"
         android:background="#eff2f6"
         />
     <LinearLayout
@@ -56,6 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#eff2f6"
+        android:layout_marginTop="2dp"
         />
 
     <RelativeLayout
@@ -97,10 +99,10 @@
             />
         <Button
             android:onClick="register"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="40dp"
             android:text="@string/register"
-            android:textSize="6dp"
+            android:textSize="10dp"
             android:layout_marginTop="250dp"
             android:layout_marginLeft="160dp"
             />
