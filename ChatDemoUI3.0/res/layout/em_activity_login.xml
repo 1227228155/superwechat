@@ -23,6 +23,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColor="#000"
             android:hint="@string/user_name"
             />
     </LinearLayout>
@@ -51,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/password"
+            android:textColor="#000"
             />
     </LinearLayout>
     <TextView

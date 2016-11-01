@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/user_name"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:layout_marginLeft="@dimen/size15px"
             />
     </LinearLayout>
@@ -50,7 +50,7 @@
             android:hint="@string/nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:layout_marginLeft="@dimen/size15px"
             />
     </LinearLayout>
@@ -77,8 +77,9 @@
             android:hint="@string/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:layout_marginLeft="@dimen/size15px"
+            android:inputType="textPassword"
             />
     </LinearLayout>
     <TextView
@@ -104,8 +105,9 @@
             android:hint="@string/confirmpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:layout_marginLeft="@dimen/size15px"
+            android:inputType="textPassword"
             />
     </LinearLayout>
 

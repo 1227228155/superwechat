@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.google.gson.Gson;
-import com.hyphenate.chatuidemo.DemoApplication;
+import com.hyphenate.chatuidemo.SuperWeChatApplication;
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.bean.Result;
 
@@ -148,7 +148,7 @@ public class OkHttpUtils<T> {
 
 
     private void initHandler() {
-        mHandler = new Handler(DemoApplication.applicationContext.getMainLooper()) {
+        mHandler = new Handler(SuperWeChatApplication.applicationContext.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
