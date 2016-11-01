@@ -34,7 +34,7 @@ import android.widget.TextView;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMContact;
-import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.chatuidemo.domain.RobotUser;
@@ -74,7 +74,7 @@ public class RobotsActivity extends BaseActivity {
 				getRobotNamesFromServer();
 			}
 		});
-		Map<String, RobotUser> robotMap = DemoHelper.getInstance().getRobotList();
+		Map<String, RobotUser> robotMap = SuperWeChatHelper.getInstance().getRobotList();
 		if (robotMap != null) {
 			robotList.addAll(robotMap.values());
 		} else {
@@ -129,7 +129,7 @@ public class RobotsActivity extends BaseActivity {
 						robotList.clear();
 						robotList.addAll(mMap.values());
 						// save it in cache
-						DemoHelper.getInstance().setRobotList(mMap);
+						SuperWeChatHelper.getInstance().setRobotList(mMap);
 						// save it in database
 						UserDao dao = new UserDao(RobotsActivity.this);
 						dao.saveRobotUser(robotList);

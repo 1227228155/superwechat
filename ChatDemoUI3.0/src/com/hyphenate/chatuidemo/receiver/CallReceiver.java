@@ -18,7 +18,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.hyphenate.chatuidemo.DemoHelper;
+import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.ui.VideoCallActivity;
 import com.hyphenate.chatuidemo.ui.VoiceCallActivity;
 import com.hyphenate.util.EMLog;
@@ -27,7 +27,7 @@ public class CallReceiver extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if(!DemoHelper.getInstance().isLoggedIn())
+		if(!SuperWeChatHelper.getInstance().isLoggedIn())
 		    return;
 		//username
 		String from = intent.getStringExtra("from");

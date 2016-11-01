@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.hyphenate.chatuidemo.Constant;
-import com.hyphenate.chatuidemo.DemoApplication;
+import com.hyphenate.chatuidemo.SuperWeChatApplication;
 import com.hyphenate.chatuidemo.domain.InviteMessage;
 import com.hyphenate.chatuidemo.domain.InviteMessage.InviteMesageStatus;
 import com.hyphenate.chatuidemo.domain.RobotUser;
@@ -20,17 +20,17 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class DemoDBManager {
-    static private DemoDBManager dbMgr = new DemoDBManager();
+public class SuperWeChatDBManager {
+    static private SuperWeChatDBManager dbMgr = new SuperWeChatDBManager();
     private DbOpenHelper dbHelper;
     
-    private DemoDBManager(){
-        dbHelper = DbOpenHelper.getInstance(DemoApplication.getInstance().getApplicationContext());
+    private SuperWeChatDBManager(){
+        dbHelper = DbOpenHelper.getInstance(SuperWeChatApplication.getInstance().getApplicationContext());
     }
     
-    public static synchronized DemoDBManager getInstance(){
+    public static synchronized SuperWeChatDBManager getInstance(){
         if(dbMgr == null){
-            dbMgr = new DemoDBManager();
+            dbMgr = new SuperWeChatDBManager();
         }
         return dbMgr;
     }

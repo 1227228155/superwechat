@@ -53,6 +53,7 @@
             android:layout_height="50dp"
             android:hint="@string/password"
             android:textColor="#000"
+            android:inputType="textPassword"
             />
     </LinearLayout>
     <TextView
