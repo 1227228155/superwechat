@@ -23,9 +23,11 @@ import android.widget.Toast;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 
+import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.bean.Result;
+import com.hyphenate.chatuidemo.utils.CommonUtils;
 import com.hyphenate.chatuidemo.utils.MFGT;
 import com.hyphenate.chatuidemo.utils.NetDao;
 import com.hyphenate.chatuidemo.utils.OkHttpUtils;
@@ -106,10 +108,19 @@ public class RegisterActivity extends BaseActivity {
         NetDao.register(mContext, username, nickname, pwd, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                if (result!=null&&result.isRetMsg()){
-                    registerEMserver();
-                }else {
-                    unregisterAppServer();
+                if (result==null){
+                    pd.dismiss();
+                }{
+                    if (result.isRetMsg()){
+                        registerEMserver();
+                    }else {
+                        if (result.getRetCode()== I.MSG_REGISTER_USERNAME_EXISTS){
+                            CommonUtils.showMsgShortToast(result.getRetCode());
+                            pd.dismiss();
+                        }else {
+                            unregisterAppServer();
+                        }
+                    }
                 }
             }
 
