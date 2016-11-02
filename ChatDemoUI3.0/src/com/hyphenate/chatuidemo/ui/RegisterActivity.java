@@ -18,35 +18,41 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
-
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.bean.Result;
 import com.hyphenate.chatuidemo.utils.CommonUtils;
+import com.hyphenate.chatuidemo.utils.MD5;
 import com.hyphenate.chatuidemo.utils.MFGT;
 import com.hyphenate.chatuidemo.utils.NetDao;
 import com.hyphenate.chatuidemo.utils.OkHttpUtils;
 import com.hyphenate.exceptions.HyphenateException;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * register screen
- *
  */
 public class RegisterActivity extends BaseActivity {
+    @BindView(R.id.title_back)
+    ImageView titleBack;
+    @BindView(R.id.title_name)
+    TextView titleName;
     private EditText userNameEditText;
     private EditText passwordEditText;
     private EditText confirmPwdEditText;
     private EditText nicknameEditText;
 
-    String username ;
+    String username;
     String nickname;
     String pwd;
 
@@ -58,31 +64,38 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.em_activity_register);
         ButterKnife.bind(this);
-        mContext =this;
+        mContext = this;
         userNameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
         nicknameEditText = (EditText) findViewById(R.id.nickname);
+        initView();
+    }
+
+    private void initView() {
+        titleBack.setVisibility(View.VISIBLE);
+        titleName.setVisibility(View.VISIBLE);
+        titleName.setText(R.string.register);
     }
 
     public void register(View view) {
-         username = userNameEditText.getText().toString().trim();
-         nickname = nicknameEditText.getText().toString().trim();
-         pwd = passwordEditText.getText().toString().trim();
+        username = userNameEditText.getText().toString().trim();
+        nickname = nicknameEditText.getText().toString().trim();
+        pwd = passwordEditText.getText().toString().trim();
         String confirm_pwd = confirmPwdEditText.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
             userNameEditText.requestFocus();
             return;
-        }else if (!username.matches("[a-zA-Z]\\w{5,15}")){
+        } else if (!username.matches("[a-zA-Z]\\w{5,15}")) {
             Toast.makeText(this, getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
             userNameEditText.requestFocus();
             return;
-        }else if (TextUtils.isEmpty(nickname)){
+        } else if (TextUtils.isEmpty(nickname)) {
             Toast.makeText(this, getResources().getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
             nicknameEditText.requestFocus();
             return;
-        }else if (TextUtils.isEmpty(pwd)) {
+        } else if (TextUtils.isEmpty(pwd)) {
             Toast.makeText(this, getResources().getString(R.string.Password_cannot_be_empty), Toast.LENGTH_SHORT).show();
             passwordEditText.requestFocus();
             return;
@@ -100,7 +113,7 @@ public class RegisterActivity extends BaseActivity {
             pd.setMessage(getResources().getString(R.string.Is_the_registered));
             pd.show();
 
-           registerAppServer();
+            registerAppServer();
         }
     }
 
@@ -108,16 +121,17 @@ public class RegisterActivity extends BaseActivity {
         NetDao.register(mContext, username, nickname, pwd, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                if (result==null){
+                if (result == null) {
                     pd.dismiss();
-                }{
-                    if (result.isRetMsg()){
+                }
+                {
+                    if (result.isRetMsg()) {
                         registerEMserver();
-                    }else {
-                        if (result.getRetCode()== I.MSG_REGISTER_USERNAME_EXISTS){
+                    } else {
+                        if (result.getRetCode() == I.MSG_REGISTER_USERNAME_EXISTS) {
                             CommonUtils.showMsgShortToast(result.getRetCode());
                             pd.dismiss();
-                        }else {
+                        } else {
                             unregisterAppServer();
                         }
                     }
@@ -152,7 +166,7 @@ public class RegisterActivity extends BaseActivity {
             public void run() {
                 try {
                     // call method in SDK
-                    EMClient.getInstance().createAccount(username, pwd);
+                    EMClient.getInstance().createAccount(username, MD5.getMessageDigest(pwd));
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())
@@ -189,12 +203,15 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
-    public void back(View view) {
-        MFGT.finish(mContext);
-    }
 
     @Override
     public void onBackPressed() {
         MFGT.finish(mContext);
+    }
+
+
+    @OnClick(R.id.title_back)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }
