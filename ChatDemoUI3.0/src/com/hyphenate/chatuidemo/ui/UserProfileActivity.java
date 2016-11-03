@@ -75,7 +75,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			iconRightArrow.setVisibility(View.INVISIBLE);
 		}
 		if(username != null){
-    		if (username.equals(EMClient.getInstance().getCurrentUser())) {
+    		/*if (username.equals(EMClient.getInstance().getCurrentUser())) {
     			tvUsername.setText(EMClient.getInstance().getCurrentUser());
     			EaseUserUtils.setUserNick(username, tvNickName);
                 EaseUserUtils.setUserAvatar(this, username, headAvatar);
@@ -84,7 +84,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     			EaseUserUtils.setUserNick(username, tvNickName);
     			EaseUserUtils.setUserAvatar(this, username, headAvatar);
     			asyncFetchUserInfo(username);
-    		}
+    		}*/
+			tvUsername.setText(username);
+			EaseUserUtils.setAppUserNick(username, tvNickName);
+			EaseUserUtils.setAppUserAvatar(this, username, headAvatar);
 		}
 	}
 
