@@ -1,4 +1,33 @@
 <resources>
 
+    <!-- Dicover-->
+    <string name="discover_txt_pengyouquan">q</string>
+    <string name="discover_txt_saoyisao">q</string>
+    <string name="discover_txt_yaoyiyao">q</string>
+    <string name="discover_txt_nearby">q</string>
+    <string name="discover_txt_piaoliuping">q</string>
+    <string name="discover_txt_shop">q</string>
+    <string name="discover_txt_game">q</string>
+
+    <!-- default -->
+    <string name="def_empty_data_text">q</string>
+    <string name="def_empty_button_retry">q</string>
+    <string name="def_net_error_text">q</string>
+    <string name="def_data_loading">q&#8230;</string>
+    <string name="def_more">q&#8230;</string>
+    <string name="key_back_msg">q</string>
+
+    <!-- 钱包 -->
+    <string name="wallet_txt_lingqian">q</string>
+    <string name="wallet_txt_yinhangka">q</string>
+    <string name="wallet_txt_cards">q</string>
+
+    <!-- 设置 -->
+    <string name="setting_txt_usersafe">q</string>
+    <string name="setting_txt_msgtip">q</string>
+    <string name="setting_txt_yinsi">q</string>
+    <string name="setting_txt_tongyong">q</string>
+    <string name="setting_txt_about">q</string>
+    <string name="setting_btn_exit">q</string>
 
 </resources>
