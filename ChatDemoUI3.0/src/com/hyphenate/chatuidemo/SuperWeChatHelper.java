@@ -85,6 +85,8 @@ public class SuperWeChatHelper {
 
 	private Map<String, EaseUser> contactList;
 
+    private Map<String, User> appContactList;
+
 	private Map<String, RobotUser> robotList;
 
 	private UserProfileManager userProManager;
@@ -224,6 +226,11 @@ public class SuperWeChatHelper {
             @Override
             public EaseUser getUser(String username) {
                 return getUserInfo(username);
+            }
+
+            @Override
+            public User getAppUser(String username) {
+                return getAppUserInfo(username);
             }
         });
 
@@ -714,8 +721,8 @@ public class SuperWeChatHelper {
     }
 	
 	private EaseUser getUserInfo(String username){
-		// To get instance of EaseUser, here we get it from the user list in memory
-		// You'd better cache it if you get it from your server
+        // To get instance of EaseUser, here we get it from the user list in memory
+        // You'd better cache it if you get it from your server
         EaseUser user = null;
         if(username.equals(EMClient.getInstance().getCurrentUser()))
             return getUserProfileManager().getCurrentUserInfo();
@@ -730,7 +737,19 @@ public class SuperWeChatHelper {
             EaseCommonUtils.setUserInitialLetter(user);
         }
         return user;
-	}
+    }
+    private User getAppUserInfo(String username){
+        // To get instance of EaseUser, here we get it from the user list in memory
+        // You'd better cache it if you get it from your server
+        User user = null;
+        user = getAppContactList().get(username);
+        // if user is not in your contacts, set inital letter for him/her
+        if(user == null){
+            user = new User(username);
+            EaseCommonUtils.setAppUserInitialLetter(user);
+        }
+        return user;
+    }
 	
 	 /**
      * Global listener
@@ -856,7 +875,7 @@ public class SuperWeChatHelper {
 	/**
 	 * update contact list
 	 * 
-	 * @param contactList
+	 *
 	 */
 	public void setContactList(Map<String, EaseUser> aContactList) {
 		if(aContactList == null){
@@ -928,7 +947,7 @@ public class SuperWeChatHelper {
 	 /**
      * update user list to cache and database
      *
-     * @param contactList
+
      */
     public void updateContactList(List<EaseUser> contactInfoList) {
          for (EaseUser u : contactInfoList) {
@@ -1238,6 +1257,7 @@ public class SuperWeChatHelper {
         isGroupAndContactListenerRegisted = false;
         
         setContactList(null);
+        setAppContactList(null);
         setRobotList(null);
         getUserProfileManager().reset();
         SuperWeChatDBManager.getInstance().closeDB();
@@ -1249,6 +1269,42 @@ public class SuperWeChatHelper {
 
     public void popActivity(Activity activity) {
         easeUI.popActivity(activity);
+    }
+
+    public void saveAppContact(User user){
+        appContactList.put(user.getMUserName(),user);
+        demoModel.saveAppContact(user);
+    }
+
+    public void updateAppContactList(List<User> contactInfoList) {
+        for (User u : contactInfoList) {
+            appContactList.put(u.getMUserName(), u);
+        }
+        ArrayList<User> mList = new ArrayList<User>();
+        mList.addAll(appContactList.values());
+        demoModel.saveAppContactList(mList);
+    }
+    public void setAppContactList(Map<String, User> aContactList) {
+        if(aContactList == null){
+            if (appContactList != null) {
+                appContactList.clear();
+            }
+            return;
+        }
+
+        appContactList = aContactList;
+    }
+    public Map<String, User> getAppContactList() {
+        if (isLoggedIn() && appContactList == null) {
+            appContactList = demoModel.getAppContactList();
+        }
+
+        // return a empty non-null object to avoid app crash
+        if(appContactList == null){
+            return new Hashtable<String, User>();
+        }
+
+        return appContactList;
     }
 
 }
