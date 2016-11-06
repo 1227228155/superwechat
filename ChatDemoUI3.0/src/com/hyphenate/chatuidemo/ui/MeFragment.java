@@ -1,6 +1,7 @@
 package com.hyphenate.chatuidemo.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -83,7 +84,7 @@ public class MeFragment extends Fragment {
             case R.id.me_layout_smail:
                 break;
             case R.id.me_layout_setting:
-
+            startActivity(new Intent(getActivity(),SettingsActivity.class));
                 break;
         }
     }
