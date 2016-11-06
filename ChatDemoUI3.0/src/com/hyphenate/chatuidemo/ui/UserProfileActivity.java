@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.bean.Result;
@@ -366,7 +367,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         }
     }
 
-   /* public File saveBitmapFile(Intent picdata) {
+   public File saveBitmapFile(Intent picdata) {
         Bundle extras = picdata.getExtras();
         if (extras != null) {
             Bitmap bitmap = extras.getParcelable("data");
@@ -384,6 +385,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             return file;
         }
         return null;
-    }*/
+    }
 
 }
