@@ -91,4 +91,10 @@ public class MeFragment extends Fragment {
                 break;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserInfo();
+    }
 }

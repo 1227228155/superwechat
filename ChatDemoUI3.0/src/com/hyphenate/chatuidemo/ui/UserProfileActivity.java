@@ -211,7 +211,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     private void updateLocatUser(User u) {
         user = u;
         SuperWeChatHelper.getInstance().saveAppContact(u);
-        EaseUserUtils.setCurentAppUserNick(mTvUserinfoNick);
+        EaseUserUtils.setCurrentAppUserNick(mTvUserinfoNick);
     }
 
     @Override
@@ -361,6 +361,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                         }).setNegativeButton(R.string.dl_cancel, null).show();
                 break;
             case R.id.layout_userinfo_name:
+                CommonUtils.showShortToast("微信号不能修改");
                 break;
         }
     }
