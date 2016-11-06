@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.SuperWeChatModel;
 import com.hyphenate.chatuidemo.R;
+import com.hyphenate.chatuidemo.utils.ExitAppUtils;
+import com.hyphenate.chatuidemo.utils.MFGT;
 import com.hyphenate.easeui.widget.EaseSwitchButton;
 import com.hyphenate.util.EMLog;
 
@@ -115,6 +118,12 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 	
 		if(savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
+		ImageView back = (ImageView) findViewById(R.id.title_back);
+		back.setVisibility(View.VISIBLE);
+		back.setOnClickListener(this);
+		TextView title = (TextView) findViewById(R.id.title_name);
+		title.setVisibility(View.VISIBLE);
+		title.setText(R.string.set);
 		rl_switch_notification = (RelativeLayout) findViewById(R.id.rl_switch_notification);
 		rl_switch_sound = (RelativeLayout) findViewById(R.id.rl_switch_sound);
 		rl_switch_vibrate = (RelativeLayout) findViewById(R.id.rl_switch_vibrate);
@@ -352,6 +361,9 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 			case R.id.rl_custom_server:
 				startActivity(new Intent(this, SetServersActivity.class));
 				break;
+			case R.id.title_back:
+				MFGT.finish(this);
+				break;
 			default:
 				break;
 		}
@@ -372,7 +384,8 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 					public void run() {
 						pd.dismiss();
 						// show login screen
-						finish();
+						ExitAppUtils.getInstance().exit();
+					//	finish();
 						startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
 						
 					}
