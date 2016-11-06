@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
         adpter.addFragment(new ConversationListFragment(),getString(R.string.app_name));
         adpter.addFragment(new ContactListFragment(),getString(R.string.contacts));
         adpter.addFragment(new DiscoverFragment(),getString(R.string.discover));
-        adpter.addFragment(new SettingsFragment(),getString(R.string.me));
+        adpter.addFragment(new MeFragment(),getString(R.string.me));
         adpter.notifyDataSetChanged();
         layoutTabhost.setChecked(0);
         layoutTabhost.setOnCheckedChangeListener(this);
@@ -348,7 +348,6 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
     @Override
     public void onCheckedChange(int checkedPosition, boolean byUser) {
         viewPager.setCurrentItem(checkedPosition,false);
-        layoutTabhost.setChecked(checkedPosition);
     }
 
     public class MyContactListener implements EMContactListener {

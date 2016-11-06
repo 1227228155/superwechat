@@ -69,9 +69,12 @@ public class MeFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.me_layout_photo, R.id.me_layout_collect, R.id.me_layout_money, R.id.me_layout_smail, R.id.me_layout_setting})
+    @OnClick({R.id.layout_profile_view,R.id.me_layout_photo, R.id.me_layout_collect, R.id.me_layout_money, R.id.me_layout_smail, R.id.me_layout_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.layout_profile_view:
+                startActivity(new Intent(getActivity(),UserProfileActivity.class));
+                break;
             case R.id.me_layout_photo:
                 break;
             case R.id.me_layout_collect:

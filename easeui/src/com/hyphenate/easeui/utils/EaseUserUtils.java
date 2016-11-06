@@ -1,11 +1,14 @@
 package com.hyphenate.easeui.utils;
 
 import android.content.Context;
+import android.content.Entity;
+import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
@@ -102,5 +105,23 @@ public class EaseUserUtils {
             }
         }
     }
-    
+
+    public static void setCurrentAppUserAvatar(FragmentActivity activity, ImageView meAvatar) {
+        String username = EMClient.getInstance().getCurrentUser();
+        setAppUserAvatar(activity,username,meAvatar);
+    }
+
+    public static void setCurrentAppUserNick(TextView meNickname) {
+        String username = EMClient.getInstance().getCurrentUser();
+        setAppUserNick(username,meNickname);
+    }
+
+    public static void setCurrentAppUserNameWithNo(TextView meNumber) {
+            String username =EMClient.getInstance().getCurrentUser();
+            setAppUserName(username,meNumber);
+    }
+
+    private static void setAppUserName(String username, TextView meNumber) {
+       meNumber.setText(username);
+    }
 }
