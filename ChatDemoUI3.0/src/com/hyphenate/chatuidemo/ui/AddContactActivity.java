@@ -19,22 +19,32 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.R;
+import com.hyphenate.chatuidemo.bean.Result;
+import com.hyphenate.chatuidemo.utils.CommonUtils;
+import com.hyphenate.chatuidemo.utils.MFGT;
+import com.hyphenate.chatuidemo.utils.NetDao;
+import com.hyphenate.chatuidemo.utils.OkHttpUtils;
+import com.hyphenate.chatuidemo.utils.ResultUtils;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 
 public class AddContactActivity extends BaseActivity{
 	private EditText editText;
 	private RelativeLayout searchedUserLayout;
 	private TextView nameText;
-	private Button searchBtn;
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
+	ImageView searchBtn;
+	AddContactActivity mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,35 +57,55 @@ public class AddContactActivity extends BaseActivity{
 		mTextView.setText(strAdd);
 		String strUserName = getResources().getString(R.string.user_name);
 		editText.setHint(strUserName);
-		searchedUserLayout = (RelativeLayout) findViewById(R.id.ll_user);
+		//searchedUserLayout = (RelativeLayout) findViewById(R.id.ll_user);
 		nameText = (TextView) findViewById(R.id.name);
-		searchBtn = (Button) findViewById(R.id.search);
+		searchBtn = (ImageView) findViewById(R.id.search);
+		mContext =this;
 	}
 	
-	
-	/**
-	 * search contact
-	 * @param v
-	 */
-	public void searchContact(View v) {
-		final String name = editText.getText().toString();
-		String saveText = searchBtn.getText().toString();
-		
-		if (getString(R.string.button_search).equals(saveText)) {
+
+	public void searchContact() {
+		final String name = editText.getText().toString().trim();
 			toAddUsername = name;
 			if(TextUtils.isEmpty(name)) {
 				new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
 				return;
 			}
-			
-			// TODO you can search the user from your app server here.
-			
-			//show the userame and add button if user exist
-			searchedUserLayout.setVisibility(View.VISIBLE);
-			nameText.setText(toAddUsername);
-			
-		} 
-	}	
+		progressDialog = new ProgressDialog(this);
+		String stri = getResources().getString(R.string.Is_sending_a_request);
+		progressDialog.setMessage(stri);
+		progressDialog.setCanceledOnTouchOutside(false);
+		progressDialog.show();
+		NetDao.searchUser(mContext, toAddUsername, new OkHttpUtils.OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String s) {
+				progressDialog.dismiss();
+				if (s!=null){
+					Result result = ResultUtils.getResultFromJson(s, User.class);
+					if (result!=null&&result.isRetMsg()){
+						User user = (User) result.getRetData();
+						if (user!=null){
+							MFGT.gotoFriend(mContext,user);
+						}
+					}else {
+						CommonUtils.showShortToast(R.string.msg_104);
+						progressDialog.dismiss();
+					}
+				}else {
+					CommonUtils.showShortToast(R.string.msg_104);
+					progressDialog.dismiss();
+				}
+			}
+
+			@Override
+			public void onError(String error) {
+				CommonUtils.showShortToast(R.string.msg_104);
+				progressDialog.dismiss();
+			}
+		});
+
+
+	}
 	
 	/**
 	 *  add contact
@@ -132,5 +162,10 @@ public class AddContactActivity extends BaseActivity{
 	
 	public void back(View v) {
 		finish();
+	}
+
+	public void searchContact(View view) {
+
+		searchContact();
 	}
 }

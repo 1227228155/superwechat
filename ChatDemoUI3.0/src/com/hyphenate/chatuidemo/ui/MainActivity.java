@@ -31,6 +31,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,8 @@ import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.adapter.MainTabAdpter;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.db.UserDao;
+import com.hyphenate.chatuidemo.dialog.TitleMenu.ActionItem;
+import com.hyphenate.chatuidemo.dialog.TitleMenu.TitlePopup;
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsManager;
 import com.hyphenate.chatuidemo.runtimepermissions.PermissionsResultAction;
 import com.hyphenate.chatuidemo.widget.DMTabHost;
@@ -64,9 +67,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedChangeListener,ViewPager.OnPageChangeListener{
+public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
 
     protected static final String TAG = "MainActivity";
     /*// textview for unread message count
@@ -91,6 +95,8 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
     DMTabHost layoutTabhost;
     // user account was removed
     MainTabAdpter adpter;
+
+    TitlePopup mTitlePopup;
     private boolean isCurrentAccountRemoved = false;
 
 
@@ -121,7 +127,7 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
         inviteMessgeDao = new InviteMessgeDao(this);
         UserDao userDao = new UserDao(this);
         conversationListFragment = new ConversationListFragment();
-		/*contactListFragment = new ContactListFragment();
+        /*contactListFragment = new ContactListFragment();
 		SettingsFragment settingFragment = new SettingsFragment();
 		fragments = new Fragment[] { conversationListFragment, contactListFragment, settingFragment};
 
@@ -213,16 +219,40 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
         viewPager.setAdapter(adpter);
         viewPager.setOffscreenPageLimit(4);
         adpter.clear();
-        adpter.addFragment(new ConversationListFragment(),getString(R.string.app_name));
-        adpter.addFragment(new ContactListFragment(),getString(R.string.contacts));
-        adpter.addFragment(new DiscoverFragment(),getString(R.string.discover));
-        adpter.addFragment(new MeFragment(),getString(R.string.me));
+        adpter.addFragment(new ConversationListFragment(), getString(R.string.app_name));
+        adpter.addFragment(new ContactListFragment(), getString(R.string.contacts));
+        adpter.addFragment(new DiscoverFragment(), getString(R.string.discover));
+        adpter.addFragment(new MeFragment(), getString(R.string.me));
         adpter.notifyDataSetChanged();
         layoutTabhost.setChecked(0);
         layoutTabhost.setOnCheckedChangeListener(this);
         viewPager.setOnPageChangeListener(this);
+        mTitlePopup = new TitlePopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mTitlePopup.addAction(new ActionItem(this, R.string.menu_groupchat, R.drawable.icon_menu_group));
+        mTitlePopup.addAction(new ActionItem(this, R.string.menu_addfriend, R.drawable.icon_menu_addfriend));
+        mTitlePopup.addAction(new ActionItem(this, R.string.menu_qrcode, R.drawable.icon_menu_sao));
+        mTitlePopup.addAction(new ActionItem(this, R.string.menu_money, R.drawable.icon_menu_money));
+        mTitlePopup.setItemOnClickListener(onItemOnClickListener);
 
     }
+    TitlePopup.OnItemOnClickListener onItemOnClickListener  = new TitlePopup.OnItemOnClickListener() {
+        @Override
+        public void onItemClick(ActionItem item, int position) {
+            switch (position){
+                case 0:
+                break;
+                case 1:
+                    startActivity(new Intent(MainActivity.this,AddContactActivity.class));
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+
+            }
+
+        }
+    };
 
     /**
      * on tab clicked
@@ -347,7 +377,12 @@ public class MainActivity extends BaseActivity  implements DMTabHost.OnCheckedCh
 
     @Override
     public void onCheckedChange(int checkedPosition, boolean byUser) {
-        viewPager.setCurrentItem(checkedPosition,false);
+        viewPager.setCurrentItem(checkedPosition, false);
+    }
+
+    @OnClick(R.id.icon_add)
+    public void onClick() {
+        mTitlePopup.show(findViewById(R.id.title_back));
     }
 
     public class MyContactListener implements EMContactListener {
