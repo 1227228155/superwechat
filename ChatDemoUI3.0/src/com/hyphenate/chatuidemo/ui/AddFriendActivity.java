@@ -77,6 +77,7 @@ public class AddFriendActivity extends BaseActivity {
                 MFGT.finish(this);
                 break;
             case R.id.friend_add:
+                MFGT.gotoAddFirendMsg(this,user.getMUserName());
                 break;
         }
     }

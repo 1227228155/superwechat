@@ -10,6 +10,7 @@ import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.ui.AddFriendActivity;
 import com.hyphenate.chatuidemo.ui.LoginActivity;
 import com.hyphenate.chatuidemo.ui.RegisterActivity;
+import com.hyphenate.chatuidemo.ui.Request2AddActivity;
 import com.hyphenate.easeui.domain.User;
 
 
@@ -53,7 +54,7 @@ public class MFGT {
 
     public static void gotoAddFirendMsg(Activity context,String username){
         Intent intent = new Intent();
-        intent.setClass(context,AddFriendActivity.class);
+        intent.setClass(context,Request2AddActivity.class);
         intent.putExtra(I.User.USER_NAME,username);
         startActivity(context, intent);
     }
