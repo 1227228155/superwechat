@@ -55,7 +55,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     private static final int REQUESTCODE_CUTTING = 2;
     @BindView(R.id.title_back)
     ImageView mImgBack;
-    @BindView(R.id.txt_title)
+    @BindView(R.id.title_name)
     TextView mTxtTitle;
     @BindView(R.id.iv_userinfo_avatar)
     ImageView mIvUserinfoAvatar;
@@ -75,7 +75,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         ButterKnife.bind(this);
         initView();
         initListener();
-       // user = EaseUserUtils.getCurrentAppUserInfo();
+       user = EaseUserUtils.getCurrentAppUserInfo();
     }
 
     private void initView() {
@@ -248,6 +248,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                     Result result = ResultUtils.getResultFromJson(s, User.class);
                     L.e(TAG,"result="+result);
                     if(result!=null && result.isRetMsg()){
+                        User user = (User) result.getRetData();
+                        SuperWeChatHelper.getInstance().saveAppContact(user);
                         setPicToView(picData);
                     }else{
                         dialog.dismiss();
@@ -293,7 +295,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(getResources(), photo);
             mIvUserinfoAvatar.setImageDrawable(drawable);
-            uploadUserAvatar(Bitmap2Bytes(photo));
+          //  uploadUserAvatar(Bitmap2Bytes(photo));
+            dialog.dismiss();
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                    Toast.LENGTH_SHORT).show();
         }
 
     }
