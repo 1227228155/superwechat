@@ -272,7 +272,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
 
-
         <!-- 红包相关Activity start -->
         <!-- 发红包 -->
         <activity
@@ -439,7 +438,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="i#superwechat201607"/>
+            android:value="i#superwechat201607" />
         <!-- 声明sdk所需的service -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
@@ -475,7 +474,8 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
 
-        <activity android:name=".ui.GuideActivity"></activity>
+        <activity android:name=".ui.GuideActivity" />
+        <activity android:name=".ui.AddFriendActivity"></activity>
     </application>
 
 </manifest>
