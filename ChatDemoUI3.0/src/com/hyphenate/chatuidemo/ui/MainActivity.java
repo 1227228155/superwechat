@@ -81,8 +81,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     private Button[] mTabs;
     private ContactListFragment contactListFragment;
     private Fragment[] fragments;*/
-    /*private int index;
-    private int currentTabIndex;*/
+    /*private int index;*/
+    private int currentTabIndex;
     // user logged into another device
     public boolean isConflict = false;
     @BindView(R.id.weixin)
@@ -98,6 +98,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
 
     TitlePopup mTitlePopup;
     private boolean isCurrentAccountRemoved = false;
+
+    ContactListFragment mContactListFragment;
 
 
     /**
@@ -219,8 +221,9 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         viewPager.setAdapter(adpter);
         viewPager.setOffscreenPageLimit(4);
         adpter.clear();
+        mContactListFragment = new ContactListFragment();
         adpter.addFragment(new ConversationListFragment(), getString(R.string.app_name));
-        adpter.addFragment(new ContactListFragment(), getString(R.string.contacts));
+        adpter.addFragment(mContactListFragment, getString(R.string.contacts));
         adpter.addFragment(new DiscoverFragment(), getString(R.string.discover));
         adpter.addFragment(new MeFragment(), getString(R.string.me));
         adpter.notifyDataSetChanged();
@@ -336,11 +339,12 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
                     if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
-                } else if (currentTabIndex == 1) {
-                    if(contactListFragment != null) {
-                        contactListFragment.refresh();
+                } else */
+                if (currentTabIndex == 1) {
+                    if(mContactListFragment != null) {
+                        mContactListFragment.refresh();
                     }
-                }*/
+                }
                 String action = intent.getAction();
                 if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
                     if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
@@ -377,6 +381,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
 
     @Override
     public void onCheckedChange(int checkedPosition, boolean byUser) {
+//        layoutTabhost.setChecked(checkedPosition);
         viewPager.setCurrentItem(checkedPosition, false);
     }
 
@@ -459,11 +464,11 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-			/*	if (count > 0) {
-					unreadAddressLable.setVisibility(View.VISIBLE);
+				if (count > 0) {
+					layoutTabhost.setHasNew(1,true);
 				} else {
-					unreadAddressLable.setVisibility(View.INVISIBLE);
-				}*/
+                    layoutTabhost.setHasNew(1,false);
+				}
             }
         });
 
