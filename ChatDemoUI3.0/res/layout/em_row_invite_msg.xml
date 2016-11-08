@@ -94,6 +94,16 @@
             android:paddingRight="7dp"
             android:text="@string/refuse"
             android:textSize="13sp" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:text="已添加为好友"
+            android:gravity="center"
+            android:textColor="#000"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
     <LinearLayout

@@ -47,6 +47,7 @@
             android:layout_marginTop="40dp"
             />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/me_layout_photo"
         android:layout_marginTop="15dp"

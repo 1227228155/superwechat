@@ -356,6 +356,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                                 String nickString = editText.getText().toString().trim();
                                 if (TextUtils.isEmpty(nickString)) {
                                     Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
+
                                     return;
                                 }
                                 if(nickString.equals(user.getMUserNick())){
@@ -381,7 +382,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             L.e("file path="+file.getAbsolutePath());
             try {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
                 bos.flush();
                 bos.close();
             } catch (IOException e) {

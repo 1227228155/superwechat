@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.easemob.redpacketui.utils.RedPacketUtil;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.easeui.utils.EaseUserUtils;

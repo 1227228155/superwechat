@@ -42,6 +42,7 @@ import com.hyphenate.chatuidemo.utils.MFGT;
 import com.hyphenate.chatuidemo.utils.NetDao;
 import com.hyphenate.chatuidemo.utils.OkHttpUtils;
 import com.hyphenate.chatuidemo.utils.ResultUtils;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 
@@ -210,6 +211,7 @@ public class LoginActivity extends BaseActivity {
                         if (user!=null){
                             UserDao userDao =new UserDao(mContext);
                             userDao.saveAppContact(user);
+
                             loginSuccess();
                         }
                     }else {
