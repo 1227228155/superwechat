@@ -44,11 +44,16 @@ public class AddFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         ButterKnife.bind(this);
+        user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
+        if (user==null){
+            MFGT.finish(this);
+            return;
+        }
         initView();
     }
 
     private void initView() {
-        user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
+
         titleBack.setVisibility(View.VISIBLE);
         titleName.setVisibility(View.VISIBLE);
         titleName.setText("个人资料");

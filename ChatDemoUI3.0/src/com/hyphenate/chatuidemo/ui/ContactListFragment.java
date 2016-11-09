@@ -17,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,14 +33,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chatuidemo.Constant;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.SuperWeChatHelper.DataSyncListener;
+import com.hyphenate.chatuidemo.bean.Result;
 import com.hyphenate.chatuidemo.db.InviteMessgeDao;
 import com.hyphenate.chatuidemo.db.UserDao;
 import com.hyphenate.chatuidemo.utils.MFGT;
+import com.hyphenate.chatuidemo.utils.NetDao;
+import com.hyphenate.chatuidemo.utils.OkHttpUtils;
+import com.hyphenate.chatuidemo.utils.ResultUtils;
 import com.hyphenate.chatuidemo.widget.ContactItemView;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
@@ -66,6 +73,8 @@ public class ContactListFragment extends EaseContactListFragment {
     private ContactItemView applicationItem;
     private InviteMessgeDao inviteMessgeDao;
 
+    private LocalBroadcastManager broadcastManager;
+
     @SuppressLint("InflateParams")
     @Override
     protected void initView() {
@@ -82,6 +91,7 @@ public class ContactListFragment extends EaseContactListFragment {
         loadingView = LayoutInflater.from(getActivity()).inflate(R.layout.em_layout_loading_data, null);
         contentContainer.addView(loadingView);
 
+        registerForContextMenu(listView);
 
 
     }
@@ -242,6 +252,7 @@ public class ContactListFragment extends EaseContactListFragment {
                 // remove invitation message
                 InviteMessgeDao dao = new InviteMessgeDao(getActivity());
                 dao.deleteMessage(toBeProcessUser.getUsername());
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -263,6 +274,24 @@ public class ContactListFragment extends EaseContactListFragment {
         pd.setMessage(st1);
         pd.setCanceledOnTouchOutside(false);
         pd.show();
+        NetDao.delFriend(getActivity(), EMClient.getInstance().getCurrentUser(), toBeProcessUser.getUsername(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s!=null){
+                    Result result = ResultUtils.getResultFromJson(s,User.class);
+                    if (result!=null&&result.isRetMsg()){
+                       SuperWeChatHelper.getInstance().delAppContact(tobeDeleteUser.getUsername());
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
         new Thread(new Runnable() {
             public void run() {
                 try {

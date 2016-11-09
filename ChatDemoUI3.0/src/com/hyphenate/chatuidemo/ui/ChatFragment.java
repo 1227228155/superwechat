@@ -32,6 +32,7 @@ import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.domain.EmojiconExampleGroupData;
 import com.hyphenate.chatuidemo.domain.RobotUser;
+import com.hyphenate.chatuidemo.utils.MFGT;
 import com.hyphenate.chatuidemo.widget.ChatRowVoiceCall;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
@@ -253,10 +254,11 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
     @Override
     public void onAvatarClick(String username) {
-        //handling when user click avatar
+     /*   //handling when user click avatar
         Intent intent = new Intent(getActivity(), UserProfileActivity.class);
         intent.putExtra("username", username);
-        startActivity(intent);
+        startActivity(intent);*/
+        MFGT.gotoFriend(getActivity(),SuperWeChatHelper.getInstance().getAppContactList().get(username));
     }
     
     @Override
