@@ -203,15 +203,13 @@ public class LoginActivity extends BaseActivity {
     private void loginAppServer() {
         NetDao.login(mContext, currentUsername, currentPassword, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(String result) {
-                if (result!=null&&!result.equals("")){
-                    Result fromJson = ResultUtils.getResultFromJson(result, User.class);
-                    if (fromJson!=null&&fromJson.isRetMsg()){
-                        User user = (User) fromJson.getRetData();
+            public void onSuccess(String s) {
+                if (s!=null&&s!=""){
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result !=null&&result.isRetMsg()){
+                        User user = (User) result.getRetData();
                         if (user!=null){
-                            UserDao userDao =new UserDao(mContext);
-                            userDao.saveAppContact(user);
-
+                            SuperWeChatHelper.getInstance().saveAppContact(user);
                             loginSuccess();
                         }
                     }else {

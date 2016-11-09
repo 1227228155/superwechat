@@ -27,13 +27,7 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(arg0);
 		mContext =this;
 
-		/*RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.splash_root);
-		TextView versionText = (TextView) findViewById(R.id.tv_version);
 
-		versionText.setText(getVersion());
-		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
-		animation.setDuration(1500);
-		rootLayout.startAnimation(animation);*/
 	}
 
 	@Override
@@ -47,10 +41,6 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMClient.getInstance().groupManager().loadAllGroups();
 					EMClient.getInstance().chatManager().loadAllConversations();
-					UserDao userDao = new UserDao(mContext);
-					User user = userDao.getUser(EMClient.getInstance().getCurrentUser());
-					L.e(TAG,"User"+user);
-					SuperWeChatHelper.getInstance().setSetCurrentUser(user);
 					long costTime = System.currentTimeMillis() - start;
 					//wait
 					if (sleepTime - costTime > 0) {

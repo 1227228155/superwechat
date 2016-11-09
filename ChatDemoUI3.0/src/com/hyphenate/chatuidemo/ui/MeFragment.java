@@ -58,7 +58,7 @@ public class MeFragment extends Fragment {
     private void setUserInfo() {
         EaseUserUtils.setCurrentAppUserAvatar(getActivity(),meAvatar);
         EaseUserUtils.setCurrentAppUserNick(meNickname);
-        EaseUserUtils.setCurrentAppUserNameWithNo(meNumber);
+        EaseUserUtils.setCurrentAppUserName(meNumber);
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {

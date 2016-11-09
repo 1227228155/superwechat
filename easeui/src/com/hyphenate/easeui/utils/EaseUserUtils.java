@@ -112,13 +112,13 @@ public class EaseUserUtils {
         setAppUserAvatar(activity,username,meAvatar);
     }
 
-    public static void setCurrentAppUserNick(TextView meNickname) {
+    public static void setCurrentAppUserNick(TextView textView) {
         String username = EMClient.getInstance().getCurrentUser();
-        setAppUserNick(username,meNickname);
+        setAppUserNick(username,textView);
     }
     public static void setAppUserNick(String nickname,TextView textView){
         if(textView != null){
-            User u = getCurrentAppUserInfo();
+            User u = getAppUserInfo(nickname);
             if(u != null&&u.getMUserNick()!=null){
                 textView.setText(u.getMUserNick());
             }else{
@@ -126,14 +126,21 @@ public class EaseUserUtils {
             }
         }
     }
-
-    public static void setCurrentAppUserNameWithNo(TextView meNumber) {
-            String username =EMClient.getInstance().getCurrentUser();
-            setAppUserName(username,meNumber);
+    public static void setCurrentAppUserNameWithNo(TextView textView) {
+        String username = EMClient.getInstance().getCurrentUser();
+        setAppUserName("微信号 : ",username,textView);
+    }
+    public static void setAppUserNameWithNo(String username, TextView textView) {
+        setAppUserName("微信号 : ",username,textView);
     }
 
-    private static void setAppUserName(String username, TextView meNumber) {
-       meNumber.setText(username);
+    public static void setCurrentAppUserName(TextView textView) {
+        String username = EMClient.getInstance().getCurrentUser();
+        setAppUserName("",username,textView);
+    }
+
+    public static void setAppUserName(String suffix, String username, TextView textView) {
+        textView.setText(suffix + username);
     }
 
 }
