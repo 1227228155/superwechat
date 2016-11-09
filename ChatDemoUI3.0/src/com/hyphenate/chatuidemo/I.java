@@ -2,6 +2,8 @@ package com.hyphenate.chatuidemo;
 
 public interface I {
 
+	String ACTION_BACK_CONVERSATION = "action_back_conversation";
+
 	public static interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号
