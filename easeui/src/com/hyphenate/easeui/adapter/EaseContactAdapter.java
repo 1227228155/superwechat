@@ -16,18 +16,18 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.EMLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements SectionIndexer{
+public class EaseContactAdapter extends ArrayAdapter<User> implements SectionIndexer{
     private static final String TAG = "ContactAdapter";
     List<String> list;
-    List<EaseUser> userList;
-    List<EaseUser> copyUserList;
+    List<User> userList;
+    List<User> copyUserList;
     private LayoutInflater layoutInflater;
     private SparseIntArray positionOfSection;
     private SparseIntArray sectionOfPosition;
@@ -35,11 +35,11 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     private MyFilter myFilter;
     private boolean notiyfyByFilter;
 
-    public EaseContactAdapter(Context context, int resource, List<EaseUser> objects) {
+    public EaseContactAdapter(Context context, int resource, List<User> objects) {
         super(context, resource, objects);
         this.res = resource;
         this.userList = objects;
-        copyUserList = new ArrayList<EaseUser>();
+        copyUserList = new ArrayList<User>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
     }
@@ -66,10 +66,10 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             holder = (ViewHolder) convertView.getTag();
         }
         
-        EaseUser user = getItem(position);
+        User user = getItem(position);
         if(user == null)
             Log.d("ContactAdapter", position + "");
-        String username = user.getUsername();
+        String username = user.getMUserName();
         String header = user.getInitialLetter();
         
         if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
@@ -83,8 +83,8 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             holder.headerView.setVisibility(View.GONE);
         }
 
-        EaseUserUtils.setUserNick(username, holder.nameView);
-        EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
+        EaseUserUtils.setAppUserNick(user.getMUserNick(), holder.nameView);
+        EaseUserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
         
        
         if(primaryColor != 0)
@@ -100,7 +100,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     }
     
     @Override
-    public EaseUser getItem(int position) {
+    public User getItem(int position) {
         return super.getItem(position);
     }
     
@@ -151,9 +151,9 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     }
     
     protected class  MyFilter extends Filter{
-        List<EaseUser> mOriginalList = null;
+        List<User> mOriginalList = null;
         
-        public MyFilter(List<EaseUser> myList) {
+        public MyFilter(List<User> myList) {
             this.mOriginalList = myList;
         }
 
@@ -161,7 +161,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         protected synchronized FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
             if(mOriginalList==null){
-                mOriginalList = new ArrayList<EaseUser>();
+                mOriginalList = new ArrayList<User>();
             }
             EMLog.d(TAG, "contacts original size: " + mOriginalList.size());
             EMLog.d(TAG, "contacts copy size: " + copyUserList.size());
@@ -172,11 +172,11 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             }else{
                 String prefixString = prefix.toString();
                 final int count = mOriginalList.size();
-                final ArrayList<EaseUser> newValues = new ArrayList<EaseUser>();
+                final ArrayList<User> newValues = new ArrayList<User>();
                 for(int i=0;i<count;i++){
-                    final EaseUser user = mOriginalList.get(i);
-                    String username = user.getUsername();
-                    
+                    final User user = mOriginalList.get(i);
+                    String username = user.getMUserName();
+
                     if(username.startsWith(prefixString)){
                         newValues.add(user);
                     }
@@ -204,7 +204,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         protected synchronized void publishResults(CharSequence constraint,
                 FilterResults results) {
             userList.clear();
-            userList.addAll((List<EaseUser>)results.values);
+            userList.addAll((List<User>)results.values);
             EMLog.d(TAG, "publish contacts filter results size: " + results.count);
             if (results.count > 0) {
                 notiyfyByFilter = true;
