@@ -661,7 +661,7 @@ public class SuperWeChatHelper {
             localUsers.remove(username);
             userDao.deleteContact(username);
             inviteMessgeDao.deleteMessage(username);
-
+            SuperWeChatHelper.getInstance().delAppContact(username);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
@@ -1300,6 +1300,10 @@ public class SuperWeChatHelper {
     public void saveAppContact(User user){
         appContactList.put(user.getMUserName(),user);
         demoModel.saveAppContact(user);
+    }
+    public void delAppContact(String username){
+        appContactList.remove(username);
+        demoModel.delAppContact(username);
     }
 
     public void updateAppContactList(List<User> contactInfoList) {
