@@ -66,7 +66,8 @@ public class GroupPickContactsActivity extends BaseActivity {
 		// get contact list
 		final List<User> alluserList = new ArrayList<User>();
 		for (User user : SuperWeChatHelper.getInstance().getAppContactList().values()) {
-			if (!user.getMUserName().equals(Constant.NEW_FRIENDS_USERNAME) & !user.getMUserName().equals(Constant.GROUP_USERNAME) & !user.getMUserName().equals(Constant.CHAT_ROOM) & !user.getMUserName().equals(Constant.CHAT_ROBOT))
+			if (!user.getMUserName().equals(Constant.NEW_FRIENDS_USERNAME) & !user.getMUserName().equals(Constant.GROUP_USERNAME) & !user.getMUserName().equals(Constant.CHAT_ROOM) & !user.getMUserName().equals(Constant.CHAT_ROBOT)
+					&!user.getMUserName().equals(EMClient.getInstance().getCurrentUser()))
 				alluserList.add(user);
 		}
 		// sort the list

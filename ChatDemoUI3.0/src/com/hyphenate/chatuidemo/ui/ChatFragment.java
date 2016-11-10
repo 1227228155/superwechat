@@ -28,6 +28,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.chatuidemo.Constant;
+import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.domain.EmojiconExampleGroupData;
@@ -102,13 +103,15 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
             @Override
             public void onClick(View v) {
-                if (EasyUtils.isSingleActivity(getActivity())) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                }
+               /* if (EasyUtils.isSingleActivity(getActivity())) {*/
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra(I.ACTION_BACK_CONVERSATION,true);
+                startActivity(intent);
+           /*     }*/
                 onBackPressed();
             }
         });
+        titleBar.setBackgroundColor(getResources().getColor(R.color.black2));
         ((EaseEmojiconMenu)inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
         if(chatType == EaseConstant.CHATTYPE_GROUP){
             inputMenu.getPrimaryMenu().getEditText().addTextChangedListener(new TextWatcher() {

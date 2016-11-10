@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
@@ -73,10 +75,10 @@ public class AddFriendActivity extends BaseActivity {
     private void setUserInfo() {
         EaseUserUtils.setAppUserAvatar(this, user.getMUserName(), friendAvatar);
         EaseUserUtils.setAppUserNick(user.getMUserNick(), friendNickname);
-        EaseUserUtils.setUserNick(user.getMUserName(), friendUsername);
+        EaseUserUtils.setAppUserNameWithNo(user.getMUserName(), friendUsername);
     }
 
-    @OnClick({R.id.title_back, R.id.friend_add,R.id.friend_xiaoxi})
+    @OnClick({R.id.title_back, R.id.friend_add,R.id.friend_xiaoxi,R.id.friend_shipin})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_back:
@@ -87,6 +89,14 @@ public class AddFriendActivity extends BaseActivity {
                 break;
             case R.id.friend_xiaoxi:
                 startActivity(new Intent(this, ChatActivity.class).putExtra("userId", user.getMUserName()));
+                break;
+            case R.id.friend_shipin:
+                if (!EMClient.getInstance().isConnected()){
+                    Toast.makeText(this, R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
+                }else {
+                    startActivity(new Intent(this,VideoCallActivity.class).putExtra("username",user.getMUserName())
+                            .putExtra("isComingCall",false));
+                }
                 break;
         }
     }
