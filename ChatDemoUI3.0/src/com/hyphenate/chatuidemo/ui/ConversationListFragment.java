@@ -41,6 +41,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
     protected void setUpView() {
         super.setUpView();
         // register context menu
+        hideTitleBar();
         registerForContextMenu(conversationListView);
         conversationListView.setOnItemClickListener(new OnItemClickListener() {
 
