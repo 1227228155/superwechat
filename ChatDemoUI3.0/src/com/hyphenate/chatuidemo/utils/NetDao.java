@@ -2,8 +2,10 @@ package com.hyphenate.chatuidemo.utils;
 
 import android.content.Context;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.bean.Result;
+import com.hyphenate.easeui.domain.Group;
 import com.hyphenate.easeui.domain.User;
 
 import java.io.File;
@@ -93,6 +95,32 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+    public static void downloadContact(Context context, OkHttpUtils.OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME, EMClient.getInstance().getCurrentUser())
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void creatGroup(Context context,String hxid,String groupname,String description,String owner,String ispublic,String invites
+                                ,File file,OkHttpUtils.OnCompleteListener<Group> listener ){
+        OkHttpUtils<Group> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
+                .addParam(I.Group.HX_ID,hxid)
+                .addParam(I.Group.NAME,groupname)
+                .addParam(I.Group.DESCRIPTION,description)
+                .addParam(I.Group.OWNER,owner)
+                .addParam(I.Group.IS_PUBLIC,ispublic)
+                .addParam(I.Group.ALLOW_INVITES,invites)
+                .targetClass(Group.class)
+                .addFile2(file)
+                .post()
+                .execute(listener);
+
+
+    }
+
 
 
 }
