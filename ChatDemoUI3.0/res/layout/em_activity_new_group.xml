@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/black2"
         android:gravity="center_vertical" >
 
         <LinearLayout
@@ -132,7 +132,32 @@
             android:layout_gravity="center_vertical"
             android:button="@drawable/em_checkbox_bg_selector"
             />
-        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/em_button_normal_shape">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="设置群组头像"
+            android:textSize="18sp"
+            android:layout_marginLeft="5dp"
+            android:textColor="#333"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            />
+    <ImageView
+        android:id="@+id/group_set_avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/em_group_icon"
+        android:layout_weight="0"
+        android:layout_marginTop="3dp"
+        />
     </LinearLayout>
 
 </LinearLayout>
