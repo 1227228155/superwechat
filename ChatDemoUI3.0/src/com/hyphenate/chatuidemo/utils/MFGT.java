@@ -45,10 +45,10 @@ public class MFGT {
         intent.setClass(context, RegisterActivity.class);
         startActivity(context,intent.getClass());
     }
-    public static void gotoFriend(Activity context, User user){
+    public static void gotoFriend(Activity context, String username){
         Intent intent = new Intent();
         intent.setClass(context,AddFriendActivity.class);
-        intent.putExtra(I.User.USER_NAME,user);
+        intent.putExtra(I.User.USER_NAME,username);
          startActivity(context,intent);
     }
 

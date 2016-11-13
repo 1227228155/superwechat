@@ -1,6 +1,7 @@
 package com.hyphenate.chatuidemo.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,11 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.SuperWeChatHelper;
+import com.hyphenate.chatuidemo.bean.Result;
 import com.hyphenate.chatuidemo.utils.MFGT;
+import com.hyphenate.chatuidemo.utils.NetDao;
+import com.hyphenate.chatuidemo.utils.OkHttpUtils;
+import com.hyphenate.chatuidemo.utils.ResultUtils;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
@@ -31,6 +36,7 @@ public class AddFriendActivity extends BaseActivity {
     @BindView(R.id.friend_nickname)
     TextView friendNickname;
 
+    String username = null;
     User user = null;
     @BindView(R.id.friend_username)
     TextView friendUsername;
@@ -40,18 +46,67 @@ public class AddFriendActivity extends BaseActivity {
     Button friendXiaoxi;
     @BindView(R.id.friend_shipin)
     Button friendShipin;
+    boolean isFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         ButterKnife.bind(this);
-        user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
-        if (user==null){
+        username =  getIntent().getStringExtra(I.User.USER_NAME);
+        if (username==null){
             MFGT.finish(this);
             return;
         }
         initView();
+        user = SuperWeChatHelper.getInstance().getAppContactList().get(username);
+        if(user==null){
+            isFriend  = false;
+        }else {
+            setUserInfo();
+            isFriend = true;
+        }
+        isFriend(isFriend);
+        syncUserInfo();
+    }
+    private void syncFail(){
+        if (!isFriend){
+            MFGT.finish(this);
+            return;
+        }
+    }
+
+    private void syncUserInfo() {
+        NetDao.syncUserInfo(this, username, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s!=null){
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result!=null&&result.isRetMsg()){
+                        User u = (User) result.getRetData();
+                        if (u!=null){
+                            if (isFriend){
+                                SuperWeChatHelper.getInstance().saveAppContact(u);
+                            }
+                            user = u;
+                            setUserInfo();
+                        }else {
+                            syncFail();
+                        }
+
+                    }else {
+                        syncFail();
+                    }
+                }else {
+                    syncFail();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                syncFail();
+            }
+        });
     }
 
     private void initView() {
@@ -59,12 +114,10 @@ public class AddFriendActivity extends BaseActivity {
         titleBack.setVisibility(View.VISIBLE);
         titleName.setVisibility(View.VISIBLE);
         titleName.setText("个人资料");
-        setUserInfo();
-        isFriend();
     }
 
-    private void isFriend() {
-        if (SuperWeChatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())) {
+    private void isFriend(boolean a) {
+        if (a) {
             friendXiaoxi.setVisibility(View.VISIBLE);
             friendShipin.setVisibility(View.VISIBLE);
         } else {
