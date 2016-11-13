@@ -97,32 +97,34 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
             if (msg.getGroupId() != null) { // show group name
                 holder.groupContainer.setVisibility(View.VISIBLE);
                 holder.groupname.setText(msg.getGroupName());
+                EaseUserUtils.setAppGroupAvatar(context,msg.getGroupId(),holder.avator);
             } else {
                 holder.groupContainer.setVisibility(View.GONE);
+                NetDao.searchUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s != null) {
+                            Result result = ResultUtils.getResultFromJson(s, User.class);
+                            if (result != null && result.isRetMsg()) {
+                                User user = (User) result.getRetData();
+                                EaseUserUtils.setAppUserAvatar(context, user.getMUserName(), holder.avator);
+                                EaseUserUtils.setAppUserNick(user.getMUserNick(), holder.name);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
             }
 
             holder.reason.setText(msg.getReason());
             //	holder.name.setText(msg.getFrom());
             // holder.time.setText(DateUtils.getTimestampString(new
             // Date(msg.getTime())));
-            NetDao.searchUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String s) {
-                    if (s != null) {
-                        Result result = ResultUtils.getResultFromJson(s, User.class);
-                        if (result != null && result.isRetMsg()) {
-                            User user = (User) result.getRetData();
-                            EaseUserUtils.setAppUserAvatar(context, user.getMUserName(), holder.avator);
-                            EaseUserUtils.setAppUserNick(user.getMUserNick(), holder.name);
-                        }
-                    }
-                }
 
-                @Override
-                public void onError(String error) {
-
-                }
-            });
             if (msg.getStatus() == InviteMesageStatus.BEAGREED) {
                 holder.status.setVisibility(View.INVISIBLE);
                 holder.reason.setText(str1);
