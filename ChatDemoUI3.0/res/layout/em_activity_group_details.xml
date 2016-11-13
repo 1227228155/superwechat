@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/black2"
         android:gravity="center_vertical" >
 
         <LinearLayout
@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/ease_common_tab_bg"
             android:onClick="back" >
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
