@@ -40,6 +40,7 @@ import com.hyphenate.chat.EMGroupManager.EMGroupStyle;
 import com.hyphenate.chatuidemo.I;
 import com.hyphenate.chatuidemo.R;
 import com.hyphenate.chatuidemo.bean.Result;
+import com.hyphenate.chatuidemo.utils.CommonUtils;
 import com.hyphenate.chatuidemo.utils.L;
 import com.hyphenate.chatuidemo.utils.NetDao;
 import com.hyphenate.chatuidemo.utils.OkHttpUtils;
@@ -74,6 +75,7 @@ public class NewGroupActivity extends BaseActivity {
     private TextView secondTextView;
 
     File avatarFile = null;
+    EMGroup group  =  null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,8 +167,8 @@ public class NewGroupActivity extends BaseActivity {
                     } else {
                         option.style = memberCheckbox.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                     }
-                    EMGroup group = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
-                    createAppGroup(group);
+                    group = EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
+                    createAppGroup();
 
                 } catch (final HyphenateException e) {
                     runOnUiThread(new Runnable() {
@@ -191,12 +193,15 @@ public class NewGroupActivity extends BaseActivity {
         });
     }
 
-    private void createAppGroup(EMGroup group) {
+    private void createAppGroup() {
         if (avatarFile==null){
             NetDao.creatGroup(this, group, new OkHttpUtils.OnCompleteListener<String>() {
                 @Override
                 public void onSuccess(String s) {
                     afterCreatAppGroup(s);
+                    if (group.getMembers()!=null&&group.getMembers().size()>1){
+                        addGroupMember();
+                    }
                 }
 
                 @Override
@@ -209,6 +214,10 @@ public class NewGroupActivity extends BaseActivity {
                 @Override
                 public void onSuccess(String s) {
                     afterCreatAppGroup(s);
+                    if (group.getMembers()!=null&&group.getMembers().size()>1){
+                        addGroupMember();
+                    }
+
                 }
 
                 @Override
@@ -217,6 +226,27 @@ public class NewGroupActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void addGroupMember() {
+        NetDao.addGroupMember(this, group, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s!=null){
+                    Result result = ResultUtils.getResultFromJson(s, Group.class);
+                    if (result!=null&&result.isRetMsg()){
+                        createGroupSuccess();
+                    }else {
+                        CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+            }
+        });
     }
 
     private void afterCreatAppGroup(String s) {

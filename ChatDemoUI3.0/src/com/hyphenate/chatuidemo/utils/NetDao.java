@@ -5,6 +5,7 @@ import android.content.Context;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chatuidemo.I;
+import com.hyphenate.chatuidemo.SuperWeChatHelper;
 import com.hyphenate.chatuidemo.bean.Result;
 import com.hyphenate.easeui.domain.Group;
 import com.hyphenate.easeui.domain.User;
@@ -131,8 +132,22 @@ public class NetDao {
                 .targetClass(String.class)
                 .post()
                 .execute(listener);
+    }
 
-
+    public static void addGroupMember(Context context, EMGroup emGroup, OkHttpUtils.OnCompleteListener<String> listener){
+        String str= "";
+        for (String m:emGroup.getMembers()){
+            if (!m.equals(SuperWeChatHelper.getInstance().getCurrentUsernName())){
+                str += m+",";
+            }
+        }
+        str = str.substring(0,str.length()-1);
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+                .addParam(I.Member.GROUP_HX_ID,emGroup.getGroupId())
+                .addParam(I.Member.USER_NAME,str)
+                .targetClass(String.class)
+                .execute(listener);
     }
 
 
